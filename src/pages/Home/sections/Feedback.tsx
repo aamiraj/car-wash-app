@@ -1,4 +1,6 @@
 import {
+  Avatar,
+  Button,
   Col,
   Flex,
   Form,
@@ -9,7 +11,7 @@ import {
 } from "antd";
 import { Input } from "antd";
 import { useState } from "react";
-import { FaStar } from "react-icons/fa6";
+import { FaStar, FaUser } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 const { Title, Paragraph } = Typography;
@@ -23,22 +25,51 @@ type FieldType = {
 const desc = ["Terrible", "Bad", "Normal", "Good", "Wonderful"];
 
 const Feedback = () => {
-  const [value, setValue] = useState(3);
   const [user, setUser] = useState("Miraj");
+
+  return <div className="py-10">{user ? <YourFeedback /> : <LogIn />}</div>;
+};
+
+export default Feedback;
+
+const YourFeedback = () => {
+  const [value, setValue] = useState(3);
+  const [feedback, setFeedback] = useState(true);
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     console.log("Success:", values);
   };
+
   return (
-    <div className="py-10">
-      {user ? (
+    <div>
+      {feedback ? (
         <div>
-          <h1 className="header1">
-            YOUR FEEDBACK
-          </h1>
-          <p className="header2">
-            You are reviewing and rating as: John Doe
-          </p>
+          <h1 className="header1">FEEDBACKS</h1>
+          <p className="header2">Feedbacks given by all users</p>
+          <div className="mt-10">
+            <div className="flex flex-col justify-center items-center gap-4">
+              <h1 className="text-6xl font-bold text-[#008dda]">3.5/5.0</h1>
+              <Rate
+                disabled
+                defaultValue={3.5 - 1}
+                allowHalf
+                character={<FaStar className="text-4xl md:text-7xl" />}
+              />
+            </div>
+            {/* feedback cards here  */}
+            <div className="mt-10 flex flex-col items-center justify-center gap-8">
+              <FeedbackCards />
+              <FeedbackCards />
+              <FeedbackCards />
+              <FeedbackCards />
+              <Button htmlType="button" type="primary">SEE ALL REVIEWS</Button>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div>
+          <h1 className="header1">YOUR FEEDBACK</h1>
+          <p className="header2">You are reviewing and rating as: John Doe</p>
           <div className="py-8 max-w-[600px] mx-auto">
             <Form
               name="basic"
@@ -71,18 +102,46 @@ const Feedback = () => {
             </Form>
           </div>
         </div>
-      ) : (
-        <Flex justify="center" align="center">
-          <Flex justify="center" align="center" vertical>
-            <Title level={3}>You need to log in to review and rate.</Title>
-            <Link to="/log-in" className="log-in-btn">
-              LOG IN
-            </Link>
-          </Flex>
-        </Flex>
       )}
     </div>
   );
 };
 
-export default Feedback;
+const FeedbackCards = () => {
+  return (
+    <div className="flex flex-col gap-2 max-w-[500px]">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center justify-start gap-4">
+          <Avatar size={"default"} icon={<FaUser />} />
+          <p className="text-lg font-semibold">John Doe</p>
+        </div>
+        <div className="text-lg font-semibold flex items-center justify-start gap-2">
+          <FaStar /> <span>3</span>
+        </div>
+      </div>
+      <div>
+        <span className="text-sm text-[#757575]">Sep 21, 2024</span>
+      </div>
+      <div>
+        <p>
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry. Lorem Ipsum has been the industry's standard dummy text
+          ever.
+        </p>
+      </div>
+    </div>
+  );
+};
+
+const LogIn = () => {
+  return (
+    <Flex justify="center" align="center">
+      <Flex justify="center" align="center" vertical>
+        <Title level={3}>You need to log in to review and rate.</Title>
+        <Link to="/log-in" className="log-in-btn">
+          LOG IN
+        </Link>
+      </Flex>
+    </Flex>
+  );
+};
