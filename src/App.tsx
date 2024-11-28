@@ -8,7 +8,10 @@ function App() {
         components: {
           Layout: {
             bodyBg: "#FFFFFF",
-          }
+          },
+          Typography: {
+            fontSize: 16,
+          },
         },
         token: {
           // Seed Token

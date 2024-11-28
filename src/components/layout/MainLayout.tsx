@@ -1,4 +1,4 @@
-import { Layout, Space } from "antd";
+import { Col, Layout, Row, Space, Typography } from "antd";
 import Logo from "../ui/Logo";
 import {
   FaBars,
@@ -9,6 +9,8 @@ import {
   FaYoutube,
 } from "react-icons/fa6";
 import { Link, NavLink, Outlet } from "react-router-dom";
+
+const { Title, Paragraph } = Typography;
 
 const { Header, Content, Footer } = Layout;
 
@@ -156,7 +158,42 @@ const MainLayout = () => {
       <Content style={contentStyle}>
         <Outlet />
       </Content>
-      <Footer>Ant Design ©{new Date().getFullYear()} Created by Ant UED</Footer>
+      <Footer>
+        <Row gutter={[32,16]}>
+          <Col span={24} md={{ span: 12 }} lg={{ span: 6 }}>
+            <Logo />
+            <Paragraph className="text-justify">
+              Car wash provides a professional service which is grooming and
+              maintaining cleanliness of your car. We are determined to give you
+              the best service in town.
+            </Paragraph>
+          </Col>
+          <Col span={24} md={{ span: 12 }} lg={{ span: 6 }}>
+            <Title level={4}>Important Link</Title>
+            <Space align="start" direction="vertical">
+              <Link to={"/"}>Home</Link>
+              <Link to={"/"}>Services</Link>
+              <Link to={"/"}>Bookings</Link>
+              <Link to={"/"}>Reviews</Link>
+            </Space>
+          </Col>
+          <Col span={24} md={{ span: 12 }} lg={{ span: 6 }}>
+            <Title level={4}>Quick Link</Title>
+            <Space align="start" direction="vertical">
+              <Link to={"/"}>Home</Link>
+              <Link to={"/"}>Services</Link>
+              <Link to={"/"}>Bookings</Link>
+              <Link to={"/"}>Reviews</Link>
+            </Space>
+          </Col>
+          <Col span={24} md={{ span: 12 }} lg={{ span: 6 }}>
+            <Title level={4}>Address</Title>
+            <address className="max-w-[300px]">
+              495 North Highland Hwy, Suite 475, Trenton, NJ, 01907
+            </address>
+          </Col>
+        </Row>
+      </Footer>
     </Layout>
   );
 };

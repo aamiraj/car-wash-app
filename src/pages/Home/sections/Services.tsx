@@ -1,5 +1,5 @@
-import ServiceCard from "../../ServiceCard";
-import Service1 from "../../../../assets/service-1.jpg";
+import ServiceCard from "../../../components/ui/ServiceCard";
+import Service1 from "../../../assets/service-1.jpg";
 import { Col, Row } from "antd";
 
 const services = [
@@ -44,17 +44,15 @@ const services = [
 
 const Services = () => {
   return (
-    <div className=" py-10">
-      <h1 className="text-[#008dda] text-center font-bold text-3xl  lg:text-5xl">
-        OUR SERVICES
-      </h1>
-      <p className="text-center font-bold text-lg  lg:text-2xl">
+    <div className="wrapper">
+      <h1 className="header1">OUR SERVICES</h1>
+      <p className="header2">
         Discover Our Car Wash Services
       </p>
       <div className="py-8">
         <Row gutter={[32, 16]}>
           {services.map((item, idx) => (
-            <Col span={24} sm={{span: 12}}  md={{ span: 8 }}>
+            <Col span={24} sm={{ span: 12 }} md={{ span: 8 }}>
               <ServiceCard key={idx} data={item} />
             </Col>
           ))}

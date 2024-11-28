@@ -1,6 +1,6 @@
 import { Button, Col, Image, Row } from "antd";
-import Hero1 from "../../../../assets/hero-1.jpg";
-import Hero2 from "../../../../assets/hero-2.jpg";
+import Hero1 from "../../../assets/hero-1.jpg";
+import Hero2 from "../../../assets/hero-2.jpg";
 import { TbHandClick } from "react-icons/tb";
 
 const coloredText = {
