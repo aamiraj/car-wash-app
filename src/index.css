@@ -76,3 +76,7 @@ body {
 .header2 {
   @apply text-[#222222] text-center font-bold text-lg  lg:text-2xl;
 }
+
+.black-overlay {
+  @apply w-full h-full absolute top-0 left-0 bg-gray-500/85 z-20;
+}

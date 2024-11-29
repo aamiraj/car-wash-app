@@ -25,16 +25,9 @@ type FieldType = {
 const desc = ["Terrible", "Bad", "Normal", "Good", "Wonderful"];
 
 const Feedback = () => {
-  const [user, setUser] = useState("Miraj");
-
-  return <div className="py-10">{user ? <YourFeedback /> : <LogIn />}</div>;
-};
-
-export default Feedback;
-
-const YourFeedback = () => {
   const [value, setValue] = useState(3);
-  const [feedback, setFeedback] = useState(true);
+  const [feedback, setFeedback] = useState(false);
+  const [user, setUser] = useState("Miraj");
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     console.log("Success:", values);
@@ -43,7 +36,7 @@ const YourFeedback = () => {
   return (
     <div>
       {feedback ? (
-        <div>
+        <div className="wrapper">
           <h1 className="header1">FEEDBACKS</h1>
           <p className="header2">Feedbacks given by all users</p>
           <div className="mt-10">
@@ -62,12 +55,15 @@ const YourFeedback = () => {
               <FeedbackCards />
               <FeedbackCards />
               <FeedbackCards />
-              <Button htmlType="button" type="primary">SEE ALL REVIEWS</Button>
+              <Button htmlType="button" type="primary">
+                SEE ALL REVIEWS
+              </Button>
             </div>
           </div>
         </div>
       ) : (
-        <div>
+        <div className="wrapper relative">
+          <LogIn />
           <h1 className="header1">YOUR FEEDBACK</h1>
           <p className="header2">You are reviewing and rating as: John Doe</p>
           <div className="py-8 max-w-[600px] mx-auto">
@@ -107,6 +103,8 @@ const YourFeedback = () => {
   );
 };
 
+export default Feedback;
+
 const FeedbackCards = () => {
   return (
     <div className="flex flex-col gap-2 max-w-[500px]">
@@ -135,9 +133,11 @@ const FeedbackCards = () => {
 
 const LogIn = () => {
   return (
-    <Flex justify="center" align="center">
-      <Flex justify="center" align="center" vertical>
-        <Title level={3}>You need to log in to review and rate.</Title>
+    <Flex justify="center" align="center" className="black-overlay">
+      <Flex justify="center" align="center" gap={32} vertical>
+        <h3 className="text-white text-center text-lg md:text-2xl">
+          You need to log in to review and rate.
+        </h3>
         <Link to="/log-in" className="log-in-btn">
           LOG IN
         </Link>
