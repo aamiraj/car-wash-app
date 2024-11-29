@@ -40,7 +40,7 @@ const ServiceCard = ({ data }: { data: TService }) => {
     <Card
       hoverable
       cover={<img src={data.img} alt="service" />}
-      style={{ backgroundColor: "rgb(247 238 221 / 30%)" }}
+      style={{ backgroundColor: "rgb(247 238 221 / 30%)", maxWidth: 300 }}
     >
       <h3 className="text-[#008dda] text-xl xl:text-2xl font-semibold mb-4">
         {data.name}
