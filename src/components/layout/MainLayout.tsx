@@ -19,10 +19,6 @@ const navLinkStyle: React.CSSProperties = {
   fontWeight: "600",
 };
 
-const contentStyle: React.CSSProperties = {
-  padding: "24px 50px",
-};
-
 const topHeaderContentStyle: React.CSSProperties = {
   display: "flex",
   alignItems: "center",
@@ -155,11 +151,11 @@ const MainLayout = () => {
           </div>
         </div>
       </Header>
-      <Content style={contentStyle}>
+      <Content className="p-8 lg:py-6 lg:px-12">
         <Outlet />
       </Content>
       <Footer>
-        <Row gutter={[32,16]}>
+        <Row gutter={[32, 16]}>
           <Col span={24} md={{ span: 12 }} lg={{ span: 6 }}>
             <Logo />
             <Paragraph className="text-justify">
@@ -169,21 +165,20 @@ const MainLayout = () => {
             </Paragraph>
           </Col>
           <Col span={24} md={{ span: 12 }} lg={{ span: 6 }}>
-            <Title level={4}>Important Link</Title>
+            <Title level={4}>Quick Links</Title>
             <Space align="start" direction="vertical">
-              <Link to={"/"}>Home</Link>
-              <Link to={"/"}>Services</Link>
-              <Link to={"/"}>Bookings</Link>
-              <Link to={"/"}>Reviews</Link>
+              <Link to={"/"} className="link">Home</Link>
+              <Link to={"/"} className="link">Services</Link>
+              <Link to={"/"} className="link">Bookings</Link>
+              <Link to={"/"} className="link">Reviews</Link>
             </Space>
           </Col>
           <Col span={24} md={{ span: 12 }} lg={{ span: 6 }}>
-            <Title level={4}>Quick Link</Title>
+            <Title level={4}>Social Links</Title>
             <Space align="start" direction="vertical">
-              <Link to={"/"}>Home</Link>
-              <Link to={"/"}>Services</Link>
-              <Link to={"/"}>Bookings</Link>
-              <Link to={"/"}>Reviews</Link>
+              <Link to={"/"} className="link">Facebook</Link>
+              <Link to={"/"} className="link">Twitter</Link>
+              <Link to={"/"} className="link">Youtube</Link>
             </Space>
           </Col>
           <Col span={24} md={{ span: 12 }} lg={{ span: 6 }}>
@@ -191,6 +186,8 @@ const MainLayout = () => {
             <address className="max-w-[300px]">
               495 North Highland Hwy, Suite 475, Trenton, NJ, 01907
             </address>
+            <p>+8801XXXXXXXXX</p>
+            <p>car-wash@service.com</p>
           </Col>
         </Row>
       </Footer>

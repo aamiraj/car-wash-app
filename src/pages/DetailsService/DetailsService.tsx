@@ -8,10 +8,9 @@ import {
   TableProps,
   Tag,
 } from "antd";
-// import { useParams } from "react-router-dom";
 import ServiceImg from "../../assets/service-1.jpg";
 import { FaClock, FaDollarSign } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 interface DataType {
   key: React.Key;
@@ -89,7 +88,7 @@ const rowSelection: TableProps<DataType>["rowSelection"] = {
 };
 
 const DetailsService = () => {
-  // const { serviceId } = useParams();
+  const { serviceId } = useParams();
 
   return (
     <div className="wrapper">
@@ -160,7 +159,7 @@ const DetailsService = () => {
             />
           </div>
           <Divider />
-          <Link to="/booking" className="pill-btn">
+          <Link to={`/booking/${serviceId}`} className="pill-btn">
             Book This Service
           </Link>
         </Col>

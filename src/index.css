@@ -84,6 +84,14 @@ body {
   color: #008dda;
 }
 
+.link {
+  @apply text-gray-500 text-base font-semibold;
+}
+
+.link:hover {
+  @apply text-gray-900 underline;
+}
+
 .wrapper {
   @apply py-10;
 }
