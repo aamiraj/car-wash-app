@@ -27,7 +27,7 @@ const desc = ["Terrible", "Bad", "Normal", "Good", "Wonderful"];
 const Feedback = () => {
   const [value, setValue] = useState(3);
   const [feedback, setFeedback] = useState(false);
-  const [user, setUser] = useState("Miraj");
+  const [user, setUser] = useState("");
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     console.log("Success:", values);
@@ -63,7 +63,7 @@ const Feedback = () => {
         </div>
       ) : (
         <div className="wrapper relative">
-          <LogIn />
+          {user ? <div></div> : <LogIn />}
           <h1 className="header1">YOUR FEEDBACK</h1>
           <p className="header2">You are reviewing and rating as: John Doe</p>
           <div className="py-8 max-w-[600px] mx-auto">
@@ -138,7 +138,7 @@ const LogIn = () => {
         <h3 className="text-white text-center text-lg md:text-2xl">
           You need to log in to review and rate.
         </h3>
-        <Link to="/log-in" className="log-in-btn">
+        <Link to="/log-in" className="pill-btn">
           LOG IN
         </Link>
       </Flex>
