@@ -1,9 +1,10 @@
 import { Button, Card, Tag } from "antd";
 import { FaClock, FaDollarSign, FaEye } from "react-icons/fa6";
 import { TbHandClick } from "react-icons/tb";
+import { Link } from "react-router-dom";
 
 interface TService {
-  _id: number;
+  _id: string;
   img: string;
   name: string;
   duration: number;
@@ -23,16 +24,15 @@ const BookNow = () => (
   </Button>
 );
 
-const SeeDetails = () => (
-  <Button
+const SeeDetails = ({ id }: { id: string }) => (
+  <Link
     key="see-details"
-    type="text"
-    htmlType="button"
+    to={`/services/${id}`}
     className="flex justify-center items-center gap-1"
   >
     <FaEye />
     <span>SEE DETAILS</span>
-  </Button>
+  </Link>
 );
 
 const ServiceCard = ({ data }: { data: TService }) => {
@@ -58,7 +58,7 @@ const ServiceCard = ({ data }: { data: TService }) => {
       <p className="mb-4">{data.description}</p>
       <div className="flex flex-col lg:flex-row lg:items-center justify-start gap-2">
         <BookNow />
-        <SeeDetails />
+        <SeeDetails id={data._id} />
       </div>
     </Card>
   );
