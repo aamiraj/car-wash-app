@@ -4,7 +4,7 @@ import { Col, Row } from "antd";
 
 const services = [
   {
-    _id: 1,
+    _id: "1",
     img: Service1,
     name: "Exterior Cleaning",
     duration: 60,
@@ -14,7 +14,7 @@ const services = [
   },
 
   {
-    _id: 2,
+    _id: "2",
     img: Service1,
     name: "Exterior Cleaning",
     duration: 60,
@@ -23,7 +23,7 @@ const services = [
       "Our most popular service, for vehicles that require a little extra attention. An exterior wash that leaves the car gleaming, with cleaning throughout the interior.",
   },
   {
-    _id: 3,
+    _id: "3",
     img: Service1,
     name: "Exterior Cleaning",
     duration: 60,
@@ -31,15 +31,15 @@ const services = [
     description:
       "Our most popular service, for vehicles that require a little extra attention. An exterior wash that leaves the car gleaming, with cleaning throughout the interior.",
   },
-  // {
-  //   _id: 4,
-  //   img: Service1,
-  //   name: "Exterior Cleaning",
-  //   duration: 60,
-  //   price: 50,
-  //   description:
-  //     "Our most popular service, for vehicles that require a little extra attention. An exterior wash that leaves the car gleaming, with cleaning throughout the interior.",
-  // },
+  {
+    _id: "4",
+    img: Service1,
+    name: "Exterior Cleaning",
+    duration: 60,
+    price: 50,
+    description:
+      "Our most popular service, for vehicles that require a little extra attention. An exterior wash that leaves the car gleaming, with cleaning throughout the interior.",
+  },
 ];
 
 const Services = () => {
