@@ -143,7 +143,7 @@ const SignUp: React.FC = () => {
             </Checkbox>
           </Form.Item>
           <Form.Item>
-            <Button htmlType="submit" className="log-in-btn">
+            <Button htmlType="submit" className="pill-btn">
               Submit
             </Button>
           </Form.Item>

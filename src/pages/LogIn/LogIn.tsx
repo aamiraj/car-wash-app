@@ -59,7 +59,7 @@ const LogIn: React.FC = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button htmlType="submit" className="log-in-btn">
+            <Button htmlType="submit" className="pill-btn">
               Log In
             </Button>
           </Form.Item>

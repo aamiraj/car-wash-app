@@ -107,7 +107,7 @@ const MainLayout = () => {
           </Space>
         </div>
         <div className="hidden md:block">
-          <Link to="/log-in" className="log-in-btn">
+          <Link to="/log-in" className="pill-btn">
             LOG IN
           </Link>
         </div>
@@ -147,7 +147,7 @@ const MainLayout = () => {
                     {item.label}
                   </NavLink>
                 ))}
-                <Link to="/log-in" className="log-in-btn">
+                <Link to="/log-in" className="pill-btn">
                   LOG IN
                 </Link>
               </Space>

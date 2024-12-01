@@ -160,7 +160,7 @@ const DetailsService = () => {
             />
           </div>
           <Divider />
-          <Link to="/booking" className="log-in-btn">
+          <Link to="/booking" className="pill-btn">
             Book This Service
           </Link>
         </Col>
