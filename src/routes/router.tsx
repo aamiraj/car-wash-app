@@ -6,6 +6,8 @@ import LogIn from "../pages/LogIn/LogIn";
 import Services from "../pages/OurServices/OurServices";
 import DetailsService from "../pages/DetailsService/DetailsService";
 import BookingDetails from "../pages/Booking/BookingDetails";
+import Success from "../pages/Success";
+import Error from "../pages/Error";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +30,14 @@ const router = createBrowserRouter([
         path: "/booking/:serviceId",
         element: <BookingDetails />,
       },
+      {
+        path: "/success",
+        element: <Success />,
+      },
+      {
+        path: "/error",
+        element: <Error />,
+      },
     ],
   },
   {
@@ -37,7 +47,7 @@ const router = createBrowserRouter([
   {
     path: "/log-in",
     element: <LogIn />,
-  }
+  },
 ]);
 
 export default router;
