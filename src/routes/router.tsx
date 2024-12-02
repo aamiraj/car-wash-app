@@ -8,6 +8,11 @@ import DetailsService from "../pages/DetailsService/DetailsService";
 import BookingDetails from "../pages/Booking/BookingDetails";
 import Success from "../pages/Success";
 import Error from "../pages/Error";
+import AdminLayout from "../components/layout/AdminLayout";
+import AdminDashboard from "../pages/admin/AdminDashboard/AdminDashboard";
+import ServiceManagement from "../pages/admin/ServiceManagement/ServiceManagement";
+import SlotManagement from "../pages/admin/SlotManagement/SlotManagement";
+import UsersManagement from "../pages/admin/UsersManagement/UsersManagement";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +42,28 @@ const router = createBrowserRouter([
       {
         path: "/error",
         element: <Error />,
+      },
+    ],
+  },
+  {
+    path: "/admin",
+    element: <AdminLayout />,
+    children: [
+      {
+        index: true,
+        element: <AdminDashboard />,
+      },
+      {
+        path: "/admin/service-management",
+        element: <ServiceManagement />,
+      },
+      {
+        path: "/admin/slot-management",
+        element: <SlotManagement />,
+      },
+      {
+        path: "/admin/users-management",
+        element: <UsersManagement />,
       },
     ],
   },
