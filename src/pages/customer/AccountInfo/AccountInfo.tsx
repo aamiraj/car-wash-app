@@ -9,7 +9,7 @@ const AccountInfo = () => {
       <div>
         <Form layout={"vertical"} form={form} style={{ maxWidth: 600 }}>
           <Row gutter={[16, 16]}>
-            <Col span={24} lg={{ span: 12 }}>
+            <Col span={24} sm={{ span: 12 }}>
               <Form.Item label="Full Name">
                 <Input defaultValue={"John Doe"} />
               </Form.Item>
@@ -23,7 +23,7 @@ const AccountInfo = () => {
                 <Input defaultValue={"+8801XXXXXXXXX"} />
               </Form.Item>
             </Col>
-            <Col span={24} lg={{ span: 12 }}>
+            <Col span={24} sm={{ span: 12 }}>
               <Form.Item label="Address">
                 <Input defaultValue={"221B Baker Street"} />
               </Form.Item>
