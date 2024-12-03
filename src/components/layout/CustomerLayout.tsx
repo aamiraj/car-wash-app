@@ -1,16 +1,24 @@
-import React from 'react';
-import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
-import { Layout, Menu, theme } from 'antd';
+import React from "react";
+import { Layout, Menu, theme } from "antd";
+import { MdOutlineDashboard } from "react-icons/md";
+import { NavLink, Outlet } from "react-router-dom";
+import Logo from "../ui/Logo";
+import { FaUserAlt } from "react-icons/fa";
 
 const { Header, Content, Footer, Sider } = Layout;
 
-const items = [UserOutlined, VideoCameraOutlined, UploadOutlined, UserOutlined].map(
-  (icon, index) => ({
-    key: String(index + 1),
-    icon: React.createElement(icon),
-    label: `nav ${index + 1}`,
-  }),
-);
+const items = [
+  {
+    key: "1",
+    icon: <MdOutlineDashboard />,
+    label: <NavLink to={"/customer"}>Dashboard</NavLink>,
+  },
+  {
+    key: "2",
+    icon: <FaUserAlt />,
+    label: <NavLink to={"/customer/account-info"}>Account-info</NavLink>,
+  },
+];
 
 const CustomerLayout: React.FC = () => {
   const {
@@ -19,22 +27,24 @@ const CustomerLayout: React.FC = () => {
 
   return (
     <Layout>
-      <Sider
-        breakpoint="lg"
-        collapsedWidth="0"
-        onBreakpoint={(broken) => {
-          console.log(broken);
-        }}
-        onCollapse={(collapsed, type) => {
-          console.log(collapsed, type);
-        }}
-      >
-        <div className="demo-logo-vertical" />
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']} items={items} />
+      <Sider breakpoint="lg" collapsedWidth="0" width={240}>
+        <div className="p-4 align-middle hidden lg:block">
+          <Logo />
+        </div>
+        <Menu
+          theme="dark"
+          mode="inline"
+          defaultSelectedKeys={["1"]}
+          items={items}
+        />
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }} />
-        <Content style={{ margin: '24px 16px 0' }}>
+        <Header style={{ padding: 0, background: colorBgContainer }}>
+          <div className="p-4 align-middle block lg:hidden">
+            <Logo />
+          </div>
+        </Header>
+        <Content style={{ margin: "24px 16px 0" }}>
           <div
             style={{
               padding: 24,
@@ -43,11 +53,11 @@ const CustomerLayout: React.FC = () => {
               borderRadius: borderRadiusLG,
             }}
           >
-            content
+            <Outlet />
           </div>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>
-          Ant Design ©{new Date().getFullYear()} Created by Ant UED
+        <Footer style={{ textAlign: "center" }}>
+          Car Wash Shop ©{new Date().getFullYear()}
         </Footer>
       </Layout>
     </Layout>

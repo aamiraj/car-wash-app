@@ -13,6 +13,9 @@ import AdminDashboard from "../pages/admin/AdminDashboard/AdminDashboard";
 import ServiceManagement from "../pages/admin/ServiceManagement/ServiceManagement";
 import SlotManagement from "../pages/admin/SlotManagement/SlotManagement";
 import UsersManagement from "../pages/admin/UsersManagement/UsersManagement";
+import CustomerLayout from "../components/layout/CustomerLayout";
+import CustomerDashboard from "../pages/customer/CustomerDashboard/CustomerDashboard";
+import AccountInfo from "../pages/customer/AccountInfo/AccountInfo";
 
 const router = createBrowserRouter([
   {
@@ -64,6 +67,20 @@ const router = createBrowserRouter([
       {
         path: "/admin/users-management",
         element: <UsersManagement />,
+      },
+    ],
+  },
+  {
+    path: "/customer",
+    element: <CustomerLayout />,
+    children: [
+      {
+        index: true,
+        element: <CustomerDashboard />,
+      },
+      {
+        path: "/customer/account-info",
+        element: <AccountInfo />,
       },
     ],
   },
