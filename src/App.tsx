@@ -1,7 +1,7 @@
 import { ConfigProvider } from "antd";
 import MainLayout from "./components/layout/MainLayout";
 
-function App() {
+function MyApp() {
   return (
     <ConfigProvider
       theme={{
@@ -24,4 +24,4 @@ function App() {
   );
 }
 
-export default App;
+export default MyApp;
