@@ -2,13 +2,13 @@ import { baseApi } from "./baseApi";
 
 export const serviceApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getAllServices: builder.mutation({
+    getAllServices: builder.query({
       query: () => ({
         url: "/services",
         method: "GET",
       }),
     }),
-    getAService: builder.mutation({
+    getAService: builder.query({
       query: (id) => ({
         url: `/services/${id}`,
         method: "GET",
@@ -39,8 +39,8 @@ export const serviceApi = baseApi.injectEndpoints({
 
 export const {
   useAddAServiceMutation,
-  useGetAServiceMutation,
-  useGetAllServicesMutation,
+  useGetAServiceQuery,
+  useGetAllServicesQuery,
   useDeleteServiceMutation,
   useUpdateServiceMutation,
 } = serviceApi;

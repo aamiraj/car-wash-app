@@ -1,16 +1,28 @@
 import {
+  Button,
+  Carousel,
   Col,
+  DatePicker,
+  DatePickerProps,
   Divider,
-  Image,
   Row,
+  Skeleton,
   Table,
   TableColumnsType,
   TableProps,
-  Tag,
 } from "antd";
-import ServiceImg from "../../assets/service-1.jpg";
 import { FaClock, FaDollarSign } from "react-icons/fa6";
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import dayjs from "dayjs";
+import { useGetAServiceQuery } from "../../redux/api/serviceApi";
+import { useGetSlotsOfServiceQuery } from "../../redux/api/slotApi";
+import { useState } from "react";
+import Service1 from "../../assets/service-1.jpg";
+import Service2 from "../../assets/service-2.png";
+import Service3 from "../../assets/service-3.png";
+import Service5 from "../../assets/service-5.jpg";
+import Service6 from "../../assets/service-6.jpg";
+import Service7 from "../../assets/service-7.jpg";
 
 interface DataType {
   key: React.Key;
@@ -37,131 +49,113 @@ const columns: TableColumnsType<DataType> = [
   },
 ];
 
-const data: DataType[] = [
-  {
-    key: "1",
-    startTime: "09:30",
-    endTime: "10:30",
-    availablity: "Available",
-  },
-  {
-    key: "2",
-    startTime: "09:30",
-    endTime: "10:30",
-    availablity: "Available",
-  },
-  {
-    key: "3",
-    startTime: "09:30",
-    endTime: "10:30",
-    availablity: "Available",
-  },
-  {
-    key: "4",
-    startTime: "09:30",
-    endTime: "10:30",
-    availablity: "Available",
-  },
-  {
-    key: "5",
-    startTime: "09:30",
-    endTime: "10:30",
-    availablity: "Available",
-  },
-  {
-    key: "6",
-    startTime: "09:30",
-    endTime: "10:30",
-    availablity: "Available",
-  },
+const serviceImgs = [
+  Service1,
+  Service2,
+  Service3,
+  Service5,
+  Service6,
+  Service7,
 ];
 
-// rowSelection object indicates the need for row selection
-const rowSelection: TableProps<DataType>["rowSelection"] = {
-  onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-    console.log(
-      `selectedRowKeys: ${selectedRowKeys}`,
-      "selectedRows: ",
-      selectedRows
-    );
-  },
-};
-
 const DetailsService = () => {
+  const defaultDate = dayjs();
+  const [date, setDate] = useState(defaultDate);
   const { serviceId } = useParams();
+  const navigate = useNavigate();
+  const { data: serviceData, isFetching: serviceFetching } =
+    useGetAServiceQuery(serviceId);
+  const { data: slotsData, isFetching: slotsFetching } =
+    useGetSlotsOfServiceQuery({
+      serviceId: serviceId as string,
+      date: date.format("YYYY-MM-DD"),
+    });
+
+  const rowSelection: TableProps<DataType>["rowSelection"] = {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+      console.log(
+        `selectedRowKeys: ${selectedRowKeys}`,
+        "selectedRows: ",
+        selectedRows
+      );
+    },
+  };
+
+  const onChange: DatePickerProps["onChange"] = (_, dateStr) => {
+    console.log("onChange:", dateStr);
+    const selectedDate = dayjs(dateStr as string);
+    setDate(selectedDate);
+  };
 
   return (
     <div className="wrapper">
       <Row gutter={[32, 16]}>
         <Col span={24} md={{ span: 12 }}>
-          <Image
-            preview={false}
-            src={ServiceImg}
-            alt="service"
-            className="rounded-lg"
-          />
-          <h1 className="text-2xl md:text-4xl font-semibold mb-4">
-            About Exterior Cleaning
-          </h1>
-          <div className="mb-4">
-            <p className="text-lg flex items-center gap-1">
-              <FaClock />
-              Duration: 60min
-            </p>
-            <p color="purple" className="text-lg flex items-center gap-1">
-              <FaDollarSign />
-              Price: 100$
-            </p>
-          </div>
-          <div>
-            <h3 className="text-lg md:text-2xl font-semibold mb-4">
-              Description
-            </h3>
-            <p className="text-justify">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum.
-              <br />
-              <br />
-              Contrary to popular belief, Lorem Ipsum is not simply random text.
-              It has roots in a piece of classical Latin literature from 45 BC,
-              making it over 2000 years old. Richard McClintock, a Latin
-              professor at Hampden-Sydney College in Virginia, looked up one of
-              the more obscure Latin words, consectetur, from a Lorem Ipsum
-              passage, and going through the cites of the word in classical
-              literature, discovered the undoubtable source.
-              <br />
-              <br />
-              The standard chunk of Lorem Ipsum used since the 1500s is
-              reproduced below for those interested. Sections 1.10.32 and
-              1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also
-              reproduced in their exact original form, accompanied by English
-              versions from the 1914 translation by H. Rackham.
-            </p>
-          </div>
+          <Carousel effect="fade" autoplay style={{ marginBottom: 32 }}>
+            {serviceImgs.map((item) => (
+              <img
+                src={item}
+                alt="service"
+                className="rounded-lg h-64 object-cover"
+              />
+            ))}
+          </Carousel>
+          {serviceFetching ? (
+            <Skeleton avatar active paragraph={{ rows: 10 }} />
+          ) : (
+            <>
+              <h1 className="text-2xl md:text-4xl font-semibold mb-4">
+                {serviceData?.data?.name}
+              </h1>
+              <div className="mb-4">
+                <p className="text-lg flex items-center gap-1">
+                  <FaClock />
+                  Duration: {serviceData?.data?.duration}min
+                </p>
+                <p color="purple" className="text-lg flex items-center gap-1">
+                  <FaDollarSign />
+                  Price: {serviceData?.data?.price}$
+                </p>
+              </div>
+              <div>
+                <h3 className="text-lg md:text-2xl font-semibold mb-4">
+                  Description
+                </h3>
+                <p className="text-justify">{serviceData?.data?.description}</p>
+              </div>
+            </>
+          )}
         </Col>
         <Col span={24} md={{ span: 12 }}>
           <h3 className="text-lg font-semibold md:text-2xl mb-4">Slots</h3>
-          Date: <Tag className="mb-4">2024-11-07</Tag>
-          <div>
-            <Table<DataType>
-              rowSelection={{ type: "radio", ...rowSelection }}
-              columns={columns}
-              dataSource={data}
-              pagination={false}
-            />
+          <div className="mb-4">
+            <span>Date: </span>
+            <DatePicker onChange={onChange} defaultValue={date} />
           </div>
+
+          {slotsFetching ? (
+            <Skeleton active paragraph={{ rows: 5 }} />
+          ) : (
+            <div>
+              <Table
+                rowSelection={{ type: "radio", ...rowSelection }}
+                columns={columns}
+                dataSource={slotsData}
+                pagination={false}
+              />
+            </div>
+          )}
+
           <Divider />
-          <Link to={`/booking/${serviceId}`} className="pill-btn">
+          <Button
+            onClick={() => navigate(`/booking/${serviceId}`)}
+            type="default"
+            htmlType="button"
+            className="pill-btn"
+            disabled={!slotsData?.length}
+          >
             Book This Service
-          </Link>
+          </Button>
         </Col>
       </Row>
     </div>
@@ -169,3 +163,42 @@ const DetailsService = () => {
 };
 
 export default DetailsService;
+
+// const data: DataType[] = [
+//   {
+//     key: "1",
+//     startTime: "09:30",
+//     endTime: "10:30",
+//     availablity: "Available",
+//   },
+//   {
+//     key: "2",
+//     startTime: "09:30",
+//     endTime: "10:30",
+//     availablity: "Available",
+//   },
+//   {
+//     key: "3",
+//     startTime: "09:30",
+//     endTime: "10:30",
+//     availablity: "Available",
+//   },
+//   {
+//     key: "4",
+//     startTime: "09:30",
+//     endTime: "10:30",
+//     availablity: "Available",
+//   },
+//   {
+//     key: "5",
+//     startTime: "09:30",
+//     endTime: "10:30",
+//     availablity: "Available",
+//   },
+//   {
+//     key: "6",
+//     startTime: "09:30",
+//     endTime: "10:30",
+//     availablity: "Available",
+//   },
+// ];

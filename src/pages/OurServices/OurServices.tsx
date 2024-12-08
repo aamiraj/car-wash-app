@@ -51,7 +51,7 @@ const OurServices = () => {
         <Row gutter={[32, 16]}>
           {services.map((item, idx) => (
             <Col span={24} sm={{ span: 12 }} lg={{ span: 8 }} xl={{ span: 6 }}>
-              <ServiceCard key={idx} data={item} />
+              <ServiceCard key={idx} idx={idx} data={item} />
             </Col>
           ))}
         </Row>

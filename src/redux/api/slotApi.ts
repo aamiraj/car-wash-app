@@ -14,7 +14,7 @@ export const slotApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
-    getSlotsOfService: builder.mutation({
+    getSlotsOfService: builder.query({
       query: (args: ArgsType) => {
         const params = new URLSearchParams([...Object.entries(args)]);
 
@@ -28,4 +28,4 @@ export const slotApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useAddASlotMutation, useGetSlotsOfServiceMutation } = slotApi;
+export const { useAddASlotMutation, useGetSlotsOfServiceQuery } = slotApi;

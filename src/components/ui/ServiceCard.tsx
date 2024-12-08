@@ -2,10 +2,26 @@ import { Button, Card, Tag } from "antd";
 import { FaClock, FaDollarSign, FaEye } from "react-icons/fa6";
 import { TbHandClick } from "react-icons/tb";
 import { Link } from "react-router-dom";
+import Service1 from "../../assets/service-1.jpg";
+import Service2 from "../../assets/service-2.png";
+import Service3 from "../../assets/service-3.png";
+import Service4 from "../../assets/service-4.jpg";
+import Service5 from "../../assets/service-5.jpg";
+import Service6 from "../../assets/service-6.jpg";
+import Service7 from "../../assets/service-7.jpg";
+
+const serviceImg = [
+  Service1,
+  Service2,
+  Service3,
+  Service4,
+  Service5,
+  Service6,
+  Service7,
+];
 
 interface TService {
   _id: string;
-  img: string;
   name: string;
   duration: number;
   price: number;
@@ -35,11 +51,11 @@ const SeeDetails = ({ id }: { id: string }) => (
   </Link>
 );
 
-const ServiceCard = ({ data }: { data: TService }) => {
+const ServiceCard = ({ idx, data }: { idx: number; data: TService }) => {
   return (
     <Card
       hoverable
-      cover={<img src={data.img} alt="service" />}
+      cover={<img src={serviceImg[idx]} alt="service" />}
       style={{ backgroundColor: "rgb(247 238 221 / 30%)", maxWidth: 300 }}
     >
       <h3 className="text-[#008dda] text-xl xl:text-2xl font-semibold mb-4">
