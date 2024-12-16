@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./features/auth/authSlice";
+import slotReducer from "./features/slot/slotSlice";
 import { baseApi } from "./api/baseApi";
 import { persistReducer, PERSIST } from "redux-persist";
 import storage from "redux-persist/lib/storage";
@@ -14,6 +15,7 @@ const persistedAuthReducer = persistReducer(persistConfig, authReducer);
 export const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
+    slot: slotReducer,
     [baseApi.reducerPath]: baseApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>

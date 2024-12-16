@@ -16,19 +16,16 @@ import { useNavigate, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import { useGetAServiceQuery } from "../../redux/api/serviceApi";
 import { useGetSlotsOfServiceQuery } from "../../redux/api/slotApi";
-import { useState } from "react";
-import Service1 from "../../assets/service-1.jpg";
-import Service2 from "../../assets/service-2.png";
-import Service3 from "../../assets/service-3.png";
-import Service5 from "../../assets/service-5.jpg";
-import Service6 from "../../assets/service-6.jpg";
-import Service7 from "../../assets/service-7.jpg";
+import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { setSelectedSlot } from "../../redux/features/slot/slotSlice";
+import { serviceImgs } from "../../constants";
 
 interface DataType {
-  key: React.Key;
+  _id: string;
   startTime: string;
   endTime: string;
-  availablity: string;
+  isBooked: string;
 }
 
 const columns: TableColumnsType<DataType> = [
@@ -44,45 +41,66 @@ const columns: TableColumnsType<DataType> = [
   },
   {
     title: "Availablity",
-    dataIndex: "availablity",
-    key: "availablity",
+    dataIndex: "isBooked",
+    key: "isBooked",
+    render: (value) => {
+      return (
+        <span
+          className={`capitalize ${
+            value === "available" ? "text-lime-500" : "text-red-500"
+          }`}
+        >
+          {value}
+        </span>
+      );
+    },
   },
 ];
 
-const serviceImgs = [
-  Service1,
-  Service2,
-  Service3,
-  Service5,
-  Service6,
-  Service7,
-];
-
 const DetailsService = () => {
-  const defaultDate = dayjs();
-  const [date, setDate] = useState(defaultDate);
+  const [slotsData, setSlotsData] = useState<DataType[]>([]);
   const { serviceId } = useParams();
   const navigate = useNavigate();
+  const defaultDate = dayjs("2024-06-17");
+  const [date, setDate] = useState(defaultDate);
+  const dispatch = useAppDispatch();
+  const { slot } = useAppSelector((state) => state.slot);
+
   const { data: serviceData, isFetching: serviceFetching } =
     useGetAServiceQuery(serviceId);
-  const { data: slotsData, isFetching: slotsFetching } =
-    useGetSlotsOfServiceQuery({
-      serviceId: serviceId as string,
-      date: date.format("YYYY-MM-DD"),
-    });
+  const {
+    data: slotsObjectData,
+    isFetching: slotsFetching,
+    isError,
+  } = useGetSlotsOfServiceQuery({
+    serviceId: serviceId as string,
+    date: date.format("YYYY-MM-DD"),
+  });
+
+  useEffect(() => {
+    !slotsFetching && setSlotsData(slotsObjectData?.data);
+    isError && setSlotsData([]);
+  }, [slotsFetching, isError]);
 
   const rowSelection: TableProps<DataType>["rowSelection"] = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        "selectedRows: ",
-        selectedRows
-      );
+    onChange: (_selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+      const selectedSlot = {
+        slotId: selectedRows[0]._id,
+        serviceId: serviceId as string,
+        startTime: selectedRows[0].startTime,
+        endTime: selectedRows[0].endTime,
+        date: date.format("YYYY-MM-DD"),
+      };
+
+      dispatch(setSelectedSlot(selectedSlot));
     },
+    getCheckboxProps: (record: DataType) => ({
+      disabled: record.isBooked === "booked",
+      name: record.isBooked,
+    }),
   };
 
   const onChange: DatePickerProps["onChange"] = (_, dateStr) => {
-    console.log("onChange:", dateStr);
     const selectedDate = dayjs(dateStr as string);
     setDate(selectedDate);
   };
@@ -92,8 +110,9 @@ const DetailsService = () => {
       <Row gutter={[32, 16]}>
         <Col span={24} md={{ span: 12 }}>
           <Carousel effect="fade" autoplay style={{ marginBottom: 32 }}>
-            {serviceImgs.map((item) => (
+            {serviceImgs.map((item, idx) => (
               <img
+                key={idx}
                 src={item}
                 alt="service"
                 className="rounded-lg h-64 object-cover"
@@ -101,7 +120,7 @@ const DetailsService = () => {
             ))}
           </Carousel>
           {serviceFetching ? (
-            <Skeleton avatar active paragraph={{ rows: 10 }} />
+            <Skeleton active paragraph={{ rows: 10 }} />
           ) : (
             <>
               <h1 className="text-2xl md:text-4xl font-semibold mb-4">
@@ -133,18 +152,16 @@ const DetailsService = () => {
             <DatePicker onChange={onChange} defaultValue={date} />
           </div>
 
-          {slotsFetching ? (
-            <Skeleton active paragraph={{ rows: 5 }} />
-          ) : (
-            <div>
-              <Table
-                rowSelection={{ type: "radio", ...rowSelection }}
-                columns={columns}
-                dataSource={slotsData}
-                pagination={false}
-              />
-            </div>
-          )}
+          <div>
+            <Table
+              rowSelection={{ type: "radio", ...rowSelection }}
+              columns={columns}
+              dataSource={slotsData}
+              pagination={false}
+              loading={slotsFetching}
+              rowKey={(record) => record?._id}
+            />
+          </div>
 
           <Divider />
           <Button
@@ -152,7 +169,7 @@ const DetailsService = () => {
             type="default"
             htmlType="button"
             className="pill-btn"
-            disabled={!slotsData?.length}
+            disabled={!slotsData?.length || !slot}
           >
             Book This Service
           </Button>

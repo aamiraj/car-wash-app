@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://ph-next-assign-3.onrender.com/api",
+  baseUrl: import.meta.env.VITE_DEVELOPMENT_API as string,
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
 

@@ -5,13 +5,13 @@ import type { RootState } from "../../store";
 interface UserState {
   email: string;
   role: string;
-  exp: string;
-  iat: string;
+  exp: number | undefined;
+  iat: number | undefined;
 }
 
 interface AuthState {
   user: UserState | null;
-  token: string;
+  token: string | null;
 }
 
 // Define the initial state using that type
@@ -28,6 +28,10 @@ export const authSlice = createSlice({
     setAuth: (state, action) => {
       state.user = action.payload.user;
       state.token = action.payload.token;
+    },
+    logOutUser: (state) => {
+      state.user = null;
+      state.token = null;
     },
   },
 });

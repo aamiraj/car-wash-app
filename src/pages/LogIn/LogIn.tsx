@@ -3,6 +3,9 @@ import { Button, Form, Input, message } from "antd";
 import { FaUserCircle } from "react-icons/fa";
 import { useLogInMutation } from "../../redux/api/authApi";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../redux/hooks";
+import { setAuth } from "../../redux/features/auth/authSlice";
+import decodeJwtToken from "../../utils/decodeJwtToken";
 
 interface TLogInData {
   email: string;
@@ -14,6 +17,7 @@ const LogIn: React.FC = () => {
   const [logIn, { isLoading }] = useLogInMutation();
   const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
+  const dispatch = useAppDispatch();
 
   const onFinish = async (values: TLogInData) => {
     try {
@@ -29,7 +33,13 @@ const LogIn: React.FC = () => {
         key: "LOADING",
       });
 
-      await logIn(logInData).unwrap();
+      const res = await logIn(logInData).unwrap();
+
+      const token = await res?.token;
+
+      const decodedUser = decodeJwtToken(token);
+
+      dispatch(setAuth({ user: decodedUser, token: token }));
 
       messageApi.destroy("LOADING");
       messageApi.open({
