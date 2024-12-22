@@ -27,7 +27,14 @@ export const slotApi = baseApi.injectEndpoints({
       },
       providesTags: ["slots"]
     }),
+    getAllSlots: builder.query({
+      query: () => ({
+        url: "/slots/availability",
+        method: "GET",
+      }),
+      providesTags: ["slots"]
+    }),
   }),
 });
 
-export const { useAddASlotMutation, useGetSlotsOfServiceQuery } = slotApi;
+export const { useAddASlotMutation, useGetSlotsOfServiceQuery, useGetAllSlotsQuery } = slotApi;
