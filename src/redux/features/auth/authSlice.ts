@@ -29,6 +29,9 @@ export const authSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.token;
     },
+    tokenReceived: (state, action)=>{
+      state.token = action.payload;
+    },
     logOutUser: (state) => {
       state.user = null;
       state.token = null;
@@ -36,7 +39,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setAuth } = authSlice.actions;
+export const { setAuth, tokenReceived, logOutUser } = authSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const getUser = (state: RootState) => state.auth.user;

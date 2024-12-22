@@ -16,6 +16,7 @@ import UsersManagement from "../pages/admin/UsersManagement/UsersManagement";
 import CustomerLayout from "../components/layout/CustomerLayout";
 import CustomerDashboard from "../pages/customer/CustomerDashboard/CustomerDashboard";
 import AccountInfo from "../pages/customer/AccountInfo/AccountInfo";
+import ProtectedPage from "../components/ui/ProtectedPage";
 
 const router = createBrowserRouter([
   {
@@ -50,7 +51,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <AdminLayout />,
+    element: (
+      <ProtectedPage selectedRole={["admin", "superAdmin"]}>
+        <AdminLayout />,
+      </ProtectedPage>
+    ),
     children: [
       {
         index: true,
@@ -72,7 +77,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/customer",
-    element: <CustomerLayout />,
+    element: (
+      <ProtectedPage selectedRole={["user"]}>
+        <CustomerLayout />,
+      </ProtectedPage>
+    ),
     children: [
       {
         index: true,

@@ -50,7 +50,7 @@ const columns: TableProps<DataType>["columns"] = [
     sorter: (a, b) =>
       new Date(a?.createdAt).getMilliseconds() -
       new Date(b?.createdAt).getMilliseconds(),
-      defaultSortOrder: "ascend"
+    defaultSortOrder: "ascend",
   },
   {
     title: "Vehicle",
@@ -155,6 +155,7 @@ const AdminDashboard = () => {
               dataSource={bookingData?.data}
               pagination={false}
               scroll={{ x: true }}
+              rowKey={(record) => record?._id}
             />
           </div>
         </div>

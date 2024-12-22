@@ -1,8 +1,8 @@
 import { baseApi } from "./baseApi";
 
 interface ArgsType {
-serviceId: string;
-date: string
+  serviceId: string;
+  date: string
 }
 
 export const slotApi = baseApi.injectEndpoints({
@@ -13,6 +13,7 @@ export const slotApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["slots"]
     }),
     getSlotsOfService: builder.query({
       query: (args: ArgsType) => {
@@ -24,6 +25,7 @@ export const slotApi = baseApi.injectEndpoints({
           params: params,
         };
       },
+      providesTags: ["slots"]
     }),
   }),
 });

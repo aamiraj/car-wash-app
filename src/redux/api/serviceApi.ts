@@ -7,32 +7,37 @@ export const serviceApi = baseApi.injectEndpoints({
         url: "/services",
         method: "GET",
       }),
+      providesTags: ["services"]
     }),
     getAService: builder.query({
       query: (id) => ({
         url: `/services/${id}`,
         method: "GET",
       }),
+      providesTags: ["services"]
     }),
     addAService: builder.mutation({
       query: (data) => ({
         url: "/services",
         method: "POST",
-        data: data,
+        body: data,
       }),
+      invalidatesTags: ['services']
     }),
     updateService: builder.mutation({
       query: ({ id, data }) => ({
         url: `/services/${id}`,
         method: "PUT",
-        data: data,
+        body: data,
       }),
+      invalidatesTags: ["services"]
     }),
     deleteService: builder.mutation({
       query: (id) => ({
         url: `/services/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["services"]
     }),
   }),
 });
