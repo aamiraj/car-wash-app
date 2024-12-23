@@ -9,6 +9,9 @@ import {
   FaYoutube,
 } from "react-icons/fa6";
 import { Link, NavLink, Outlet } from "react-router-dom";
+import { useAppSelector } from "../../redux/hooks";
+import decodeJwtToken from "../../utils/decodeJwtToken";
+import AppDropDown from "../ui/AppDropDown";
 
 const { Title, Paragraph } = Typography;
 
@@ -49,6 +52,16 @@ const items = [
 ];
 
 const MainLayout = () => {
+  const auth = useAppSelector((state) => state.auth);
+
+  let user;
+  let userLink = "";
+  if (auth?.token) {
+    user = decodeJwtToken(auth?.token);
+
+    user?.role === "admin" ? (userLink = "/admin") : (userLink = "/customer");
+  }
+
   const toggleMobileNavLinks = (id: string) => {
     const menuNavLinks = document.getElementById(id) as HTMLElement;
 
@@ -103,9 +116,13 @@ const MainLayout = () => {
           </Space>
         </div>
         <div className="hidden md:block">
-          <Link to="/log-in" className="pill-btn">
-            LOG IN
-          </Link>
+          {auth?.user ? (
+            <AppDropDown userLink={userLink} />
+          ) : (
+            <Link to="/log-in" className="pill-btn">
+              LOG IN
+            </Link>
+          )}
         </div>
         {/* on mobile device  */}
         <div className="block md:hidden">
@@ -167,18 +184,32 @@ const MainLayout = () => {
           <Col span={24} md={{ span: 12 }} lg={{ span: 6 }}>
             <Title level={4}>Quick Links</Title>
             <Space align="start" direction="vertical">
-              <Link to={"/"} className="link">Home</Link>
-              <Link to={"/"} className="link">Services</Link>
-              <Link to={"/"} className="link">Bookings</Link>
-              <Link to={"/"} className="link">Reviews</Link>
+              <Link to={"/"} className="link">
+                Home
+              </Link>
+              <Link to={"/"} className="link">
+                Services
+              </Link>
+              <Link to={"/"} className="link">
+                Bookings
+              </Link>
+              <Link to={"/"} className="link">
+                Reviews
+              </Link>
             </Space>
           </Col>
           <Col span={24} md={{ span: 12 }} lg={{ span: 6 }}>
             <Title level={4}>Social Links</Title>
             <Space align="start" direction="vertical">
-              <Link to={"/"} className="link">Facebook</Link>
-              <Link to={"/"} className="link">Twitter</Link>
-              <Link to={"/"} className="link">Youtube</Link>
+              <Link to={"/"} className="link">
+                Facebook
+              </Link>
+              <Link to={"/"} className="link">
+                Twitter
+              </Link>
+              <Link to={"/"} className="link">
+                Youtube
+              </Link>
             </Space>
           </Col>
           <Col span={24} md={{ span: 12 }} lg={{ span: 6 }}>
