@@ -2,8 +2,12 @@ import { Button, Dropdown, MenuProps, Space } from "antd";
 import { FaUserCircle } from "react-icons/fa";
 import { FaAngleDown } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { useAppDispatch } from "../../redux/hooks";
+import { logOutUser } from "../../redux/features/auth/authSlice";
 
 const AppDropDown = ({ userLink }: { userLink: string }) => {
+  const dispatch = useAppDispatch();
+
   const items: MenuProps["items"] = [
     {
       key: "1",
@@ -17,10 +21,18 @@ const AppDropDown = ({ userLink }: { userLink: string }) => {
       key: "2",
       label: <Link to={userLink}>Profile</Link>,
     },
-    //   {
-    //     key: "3",
-    //     label: "Billing",
-    //   },
+    {
+      key: "3",
+      label: (
+        <Button
+          type="primary"
+          htmlType="button"
+          onClick={() => dispatch(logOutUser())}
+        >
+          Log Out
+        </Button>
+      ),
+    },
     //   {
     //     key: "4",
     //     label: "Settings",

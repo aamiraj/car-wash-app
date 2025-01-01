@@ -3,10 +3,15 @@ import { baseApi } from "./baseApi";
 export const serviceApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllServices: builder.query({
-      query: () => ({
-        url: "/services",
-        method: "GET",
-      }),
+      query: (args: Record<string, string>) => {
+        const params = new URLSearchParams(args);
+         
+        return {
+          url: "/services",
+          method: "GET",
+          params: params
+        }
+      },
       providesTags: ["services"]
     }),
     getAService: builder.query({

@@ -39,16 +39,16 @@ const items = [
     label: "Services",
     link: "/services",
   },
-  {
-    key: 3,
-    label: "Bookings",
-    link: "/bookings",
-  },
-  {
-    key: 4,
-    label: "About Us",
-    link: "/about-us",
-  },
+  // {
+  //   key: 3,
+  //   label: "Bookings",
+  //   link: "/bookings",
+  // },
+  // {
+  //   key: 4,
+  //   label: "About Us",
+  //   link: "/about-us",
+  // },
 ];
 
 const MainLayout = () => {

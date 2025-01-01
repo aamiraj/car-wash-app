@@ -1,171 +1,94 @@
-import {
-  Col,
-  GetProps,
-  Input,
-  Row,
-  Table,
-  TableProps,
-} from "antd";
+import { Col, GetProps, Input, Row, Table, TableProps } from "antd";
 import BookingCard from "../../../components/ui/BookingCard";
+import { useGetMyBookingsQuery } from "../../../redux/api/bookingApi";
 
 const { Search } = Input;
 
 type SearchProps = GetProps<typeof Input.Search>;
 
 interface DataType {
+  _id: string;
   key: string;
-  service: string;
-  customer: string;
-  date: string;
-  startTime: string;
-  endTime: string;
+  service: { name: string };
+  slot: {
+    startTime: string;
+    endTime: string;
+    date: string;
+  };
   vehicleBrand: string;
   vehicleModel: string;
   manufacturingYear: string;
   registrationPlate: string;
 }
 
-const columns: TableProps<DataType>["columns"] = [
-  {
-    title: "Date",
-    dataIndex: "date",
-    key: "date",
-    fixed: "left",
-  },
-  {
-    title: "Vehicle",
-    dataIndex: ["vehicleBrand", "vehicleModel", "manufacturingYear"],
-    key: "vehicle",
-    render: (_, record) => {
-      return (
-        <p>
-          {record.vehicleBrand} {record.vehicleModel} {record.manufacturingYear}
-        </p>
-      );
-    },
-  },
-  {
-    title: "Service",
-    dataIndex: "service",
-    key: "service",
-  },
-  {
-    title: "Selected Slot",
-    key: "slot",
-    dataIndex: ["startTime", "endTime"],
-    render: (_, record) => (
-      <p>
-        {record.startTime}:{record.endTime}
-      </p>
-    ),
-  },
-  {
-    title: "Customer",
-    key: "customer",
-    dataIndex: "customer",
-  },
-  {
-    title: "Plate No.",
-    key: "registrationPlate",
-    dataIndex: "registrationPlate",
-  },
-];
-
-const data: DataType[] = [
-  {
-    key: "1",
-    service: "Exterior Wash",
-    customer: "John Doe",
-    date: "2024-11-21",
-    startTime: "09:30",
-    endTime: "10:30",
-    vehicleBrand: "Toyota",
-    vehicleModel: "Alion",
-    manufacturingYear: "2020",
-    registrationPlate: "ABC123",
-  },
-  {
-    key: "2",
-    service: "Exterior Wash",
-    customer: "John Doe",
-    date: "2024-11-21",
-    startTime: "09:30",
-    endTime: "10:30",
-    vehicleBrand: "Toyota",
-    vehicleModel: "Alion",
-    manufacturingYear: "2020",
-    registrationPlate: "ABC123",
-  },
-  {
-    key: "3",
-    service: "Exterior Wash",
-    customer: "John Doe",
-    date: "2024-11-21",
-    startTime: "09:30",
-    endTime: "10:30",
-    vehicleBrand: "Toyota",
-    vehicleModel: "Alion",
-    manufacturingYear: "2020",
-    registrationPlate: "ABC123",
-  },
-  {
-    key: "4",
-    service: "Exterior Wash",
-    customer: "John Doe",
-    date: "2024-11-21",
-    startTime: "09:30",
-    endTime: "10:30",
-    vehicleBrand: "Toyota",
-    vehicleModel: "Alion",
-    manufacturingYear: "2020",
-    registrationPlate: "ABC123",
-  },
-  {
-    key: "5",
-    service: "Exterior Wash",
-    customer: "John Doe",
-    date: "2024-11-21",
-    startTime: "09:30",
-    endTime: "10:30",
-    vehicleBrand: "Toyota",
-    vehicleModel: "Alion",
-    manufacturingYear: "2020",
-    registrationPlate: "ABC123",
-  },
-  {
-    key: "6",
-    service: "Exterior Wash",
-    customer: "John Doe",
-    date: "2024-11-21",
-    startTime: "09:30",
-    endTime: "10:30",
-    vehicleBrand: "Toyota",
-    vehicleModel: "Alion",
-    manufacturingYear: "2020",
-    registrationPlate: "ABC123",
-  },
-];
-
 const CustomerDashboard = () => {
+  const { data, isFetching } = useGetMyBookingsQuery(undefined);
   const onSearch: SearchProps["onSearch"] = (value, _e, info) =>
     console.log(info?.source, value);
+
+  const upcomingBookings = data?.data?.filter(
+    (item: any) => new Date(item?.slot?.date).getTime() > new Date().getTime()
+  );
+
+  const columns: TableProps<DataType>["columns"] = [
+    {
+      title: "Date",
+      dataIndex: "slot.date",
+      key: "date",
+      fixed: "left",
+      render: (_, record) => <p>{record?.slot?.date}</p>,
+    },
+    {
+      title: "Vehicle",
+      dataIndex: ["vehicleBrand", "vehicleModel", "manufacturingYear"],
+      key: "vehicle",
+      render: (_, record) => {
+        return (
+          <p>
+            {record.vehicleBrand} {record.vehicleModel}{" "}
+            {record.manufacturingYear}
+          </p>
+        );
+      },
+    },
+    {
+      title: "Service",
+      dataIndex: "service.name",
+      key: "service",
+      render: (_, record) => <p>{record?.service?.name}</p>,
+    },
+    {
+      title: "Selected Slot",
+      key: "slot",
+      dataIndex: ["startTime", "endTime"],
+      render: (_, record) => (
+        <p>
+          {record?.slot?.startTime}-{record?.slot?.endTime}
+        </p>
+      ),
+    },
+    {
+      title: "Plate No.",
+      key: "registrationPlate",
+      dataIndex: "registrationPlate",
+    },
+  ];
 
   return (
     <div>
       <h1 className="text-2xl lg:text-4xl font-bold mb-4">Upcoming Bookings</h1>
       <Row gutter={[16, 16]} className="mb-8">
-        <Col span={24} sm={{ span: 12 }} md={{ span: 8 }} xl={{ span: 6 }}>
-          <BookingCard />
-        </Col>
-        <Col span={24} sm={{ span: 12 }} md={{ span: 8 }} xl={{ span: 6 }}>
-          <BookingCard />
-        </Col>
-        <Col span={24} sm={{ span: 12 }} md={{ span: 8 }} xl={{ span: 6 }}>
-          <BookingCard />
-        </Col>
-        <Col span={24} sm={{ span: 12 }} md={{ span: 8 }} xl={{ span: 6 }}>
-          <BookingCard />
-        </Col>
+        {upcomingBookings?.map((item: any, idx: number) => (
+          <Col
+            key={idx}
+            span={24}
+            sm={{ span: 12 }}
+            md={{ span: 8 }}
+            xl={{ span: 6 }}
+          >
+            <BookingCard bookingData={item} />
+          </Col>
+        ))}
       </Row>
       <h1 className="text-2xl font-semibold mb-4">Recent Bookings</h1>
       <div className="mb-4">
@@ -179,9 +102,11 @@ const CustomerDashboard = () => {
       <div className="mb-4">
         <Table<DataType>
           columns={columns}
-          dataSource={data}
+          dataSource={data?.data}
           pagination={false}
           scroll={{ x: true }}
+          loading={isFetching}
+          rowKey={(record) => record?._id}
         />
       </div>
     </div>

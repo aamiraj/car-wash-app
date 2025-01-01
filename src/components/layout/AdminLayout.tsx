@@ -3,7 +3,7 @@ import { Layout, Menu, theme } from "antd";
 import { NavLink, Outlet } from "react-router-dom";
 import Logo from "../ui/Logo";
 import { CiSettings } from "react-icons/ci";
-import { MdAvTimer, MdOutlineDashboard } from "react-icons/md";
+import { MdAvTimer, MdHome, MdOutlineDashboard } from "react-icons/md";
 import { PiUsersFourThin } from "react-icons/pi";
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -30,6 +30,11 @@ const items = [
     key: "4",
     icon: <PiUsersFourThin />,
     label: <NavLink to={"/admin/users-management"}>User Management</NavLink>,
+  },
+  {
+    key: "5",
+    icon: <MdHome />,
+    label: <NavLink to={"/"}>Back to Home</NavLink>,
   },
 ];
 

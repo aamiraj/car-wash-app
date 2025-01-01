@@ -30,20 +30,24 @@ export const carTypes = [
   { value: "hybrid car", label: "Hybrid Car" },
 ];
 
-export const carBrands = [
-  { value: "toyota", label: "Toyota" },
-  { value: "honda", label: "Honda" },
-  { value: "nissan", label: "Nissan" },
-  { value: "mitsubishi", label: "Mitsubishi" },
-  { value: "hyundai", label: "Hyundai" },
-  { value: "kia", label: "Kia" },
-  { value: "ford", label: "Ford" },
-  { value: "suzuki", label: "Suzuki" },
-  { value: "tata", label: "Tata" },
-  { value: "ashoklayland", label: "Ashok Layland" },
-  { value: "proton", label: "Proton" },
-  { value: "palki", label: "Palki" },
-  { value: "bmw", label: "BMW" },
-  { value: "mercedes-benz", label: "Mercedes-Benz" },
-  { value: "audi", label: "Audi" },
-];
+const commonBrands = [
+  "Toyota",
+  "Honda",
+  "Nissan",
+  "Mitsubishi",
+  "Hyundai",
+  "Kia",
+  "Ford",
+  "Suzuki",
+  "Tata",
+  "Ashok Layland",
+  "Proton",
+  "Palki",
+  "BMW",
+  "Mercedes-Benz",
+  "Audi",
+  "Other"
+]
+export const carBrands = commonBrands.map(item => ({
+  value: item, label: item
+}));

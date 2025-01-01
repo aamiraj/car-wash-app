@@ -61,7 +61,7 @@ const DetailsService = () => {
   const [slotsData, setSlotsData] = useState<DataType[]>([]);
   const { serviceId } = useParams();
   const navigate = useNavigate();
-  const defaultDate = dayjs("2024-06-17");
+  const defaultDate = dayjs();
   const [date, setDate] = useState(defaultDate);
   const dispatch = useAppDispatch();
   const { slot } = useAppSelector((state) => state.slot);

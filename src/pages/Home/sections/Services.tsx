@@ -24,7 +24,7 @@ const Services = () => {
                   <Skeleton avatar paragraph={{ rows: 4 }} active />
                 </Col>
               ))
-            : data.data.slice(0, 4).map((item: any, idx: number) => (
+            : data?.data?.slice(0, 4)?.map((item: any, idx: number) => (
                 <Col
                   key={idx}
                   span={24}
@@ -38,7 +38,10 @@ const Services = () => {
         </Row>
       </div>
       <div className="flex justify-center items-center">
-        <Link to={"/services"} className="pill-btn">
+        <Link
+          to={"/services"}
+          className="px-4 py-1 bg-blue-500 uppercase rounded-lg text-white hover:text-blue-500 hover:bg-gray-100"
+        >
           Explore Services
         </Link>
       </div>

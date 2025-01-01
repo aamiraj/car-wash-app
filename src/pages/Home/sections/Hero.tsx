@@ -2,6 +2,7 @@ import { Button, Col, Image, Row } from "antd";
 import Hero1 from "../../../assets/hero-1.jpg";
 import Hero2 from "../../../assets/hero-2.jpg";
 import { TbHandClick } from "react-icons/tb";
+import { useNavigate } from "react-router-dom";
 
 const coloredText = {
   color: "#008dda",
@@ -20,6 +21,8 @@ const imageStyle2: React.CSSProperties = {
 };
 
 const Hero = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="wrapper">
       <Row align={"middle"} gutter={8}>
@@ -36,8 +39,13 @@ const Hero = () => {
               <br />
               Then call us, we can take care of it.
             </p>
-            <Button type="primary" htmlType="button" icon={<TbHandClick />}>
-              BOOK FOR NOW
+            <Button
+              onClick={() => navigate("/services")}
+              type="primary"
+              htmlType="button"
+              icon={<TbHandClick />}
+            >
+              SEE ALL SERVICES
             </Button>
           </div>
         </Col>

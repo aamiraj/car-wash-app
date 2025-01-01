@@ -1,6 +1,6 @@
 import React from "react";
 import { Layout, Menu, theme } from "antd";
-import { MdOutlineDashboard } from "react-icons/md";
+import { MdHome, MdOutlineDashboard } from "react-icons/md";
 import { NavLink, Outlet } from "react-router-dom";
 import Logo from "../ui/Logo";
 import { FaUserAlt } from "react-icons/fa";
@@ -17,6 +17,11 @@ const items = [
     key: "2",
     icon: <FaUserAlt />,
     label: <NavLink to={"/customer/account-info"}>Account-info</NavLink>,
+  },
+  {
+    key: "3",
+    icon: <MdHome />,
+    label: <NavLink to={"/"}>Back to Home</NavLink>,
   },
 ];
 

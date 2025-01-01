@@ -17,6 +17,7 @@ import CustomerLayout from "../components/layout/CustomerLayout";
 import CustomerDashboard from "../pages/customer/CustomerDashboard/CustomerDashboard";
 import AccountInfo from "../pages/customer/AccountInfo/AccountInfo";
 import ProtectedPage from "../components/ui/ProtectedPage";
+import Reviews from "../pages/Reviews/Reviews";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: "/booking/:serviceId",
         element: <BookingDetails />,
+      },
+      {
+        path: "/reviews",
+        element: <Reviews />,
       },
       {
         path: "/success",

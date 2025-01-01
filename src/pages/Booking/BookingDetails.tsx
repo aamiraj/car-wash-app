@@ -30,6 +30,7 @@ interface TBookingData {
 }
 
 const BookingDetails = () => {
+  const user = useAppSelector((state) => state.auth.user);
   const [form] = Form.useForm();
   const { serviceId } = useParams();
   const { data: serviceData, isFetching: serviceFetching } =
@@ -50,7 +51,7 @@ const BookingDetails = () => {
         manufacturingYear: values?.manufacturingYear,
         registrationPlate: values?.registrationPlate,
       };
-      console.log(bookingData);
+      // console.log(bookingData);
 
       messageApi.open({
         type: "loading",
@@ -60,7 +61,7 @@ const BookingDetails = () => {
       });
 
       await addBooking(bookingData).unwrap();
-      
+
       messageApi.destroy("LOADING");
       messageApi.open({
         type: "success",
@@ -75,7 +76,7 @@ const BookingDetails = () => {
       messageApi.destroy("LOADING");
       messageApi.open({
         type: "error",
-        content: error.data.message,
+        content: "Booking failed due to server error. Try later.",
         key: "ERROR",
       });
     }
@@ -297,7 +298,7 @@ const BookingDetails = () => {
                 {/* <Button type="primary" htmlType="submit">
                 {"PAY NOW (AMARPAY)"}
               </Button> */}
-                <Button type="primary" htmlType="submit">
+                <Button type="primary" htmlType="submit" disabled={!user}>
                   {"BOOK NOW"}
                 </Button>
               </Form.Item>

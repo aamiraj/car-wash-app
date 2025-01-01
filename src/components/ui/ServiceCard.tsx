@@ -44,19 +44,18 @@ const SeeDetails = ({ id }: { id: string }) => (
   <Link
     key="see-details"
     to={`/services/${id}`}
-    className="flex justify-center items-center gap-1"
+    className="pill-btn flex justify-center items-center gap-2"
   >
-    <FaEye />
-    <span>SEE DETAILS</span>
+    <FaEye className="text-lg" />
+    <span>See Details</span>
   </Link>
 );
 
 const ServiceCard = ({ idx, data }: { idx: number; data: TService }) => {
   return (
     <Card
-      hoverable
       cover={<img src={serviceImg[idx]} alt="service" />}
-      style={{ backgroundColor: "rgb(247 238 221 / 30%)", maxWidth: 300 }}
+      style={{ position: "relative", backgroundColor: "rgb(247 238 221 / 30%)", maxWidth: 300, height: "100%" }}
     >
       <h3 className="text-[#008dda] text-xl xl:text-2xl font-semibold mb-4">
         {data.name}
@@ -71,9 +70,9 @@ const ServiceCard = ({ idx, data }: { idx: number; data: TService }) => {
           {data.price}$
         </Tag>
       </div>
-      <p className="mb-4">{data.description}</p>
-      <div className="flex flex-col lg:flex-row lg:items-center justify-start gap-2">
-        <BookNow />
+      <p className="mb-8 line-clamp-3">{data.description}</p>
+      <div className="absolute left-2 bottom-2 flex flex-col lg:flex-row lg:items-center justify-start gap-2">
+        {/* <BookNow /> */}
         <SeeDetails id={data._id} />
       </div>
     </Card>

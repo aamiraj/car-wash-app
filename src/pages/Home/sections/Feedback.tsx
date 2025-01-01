@@ -1,18 +1,25 @@
 import {
-  Avatar,
   Button,
   Col,
   Flex,
   Form,
   FormProps,
+  message,
   Rate,
   Row,
   Typography,
 } from "antd";
 import { Input } from "antd";
-import { useState } from "react";
-import { FaStar, FaUser } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { FaStar } from "react-icons/fa6";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  useAddFeedbackMutation,
+  useGetAllFeedbacksQuery,
+} from "../../../redux/api/feedbackApi";
+import { useAppSelector } from "../../../redux/hooks";
+import dayjs from "dayjs";
+import FeedbackCards from "../../../components/ui/FeedbackCards";
 
 const { Title, Paragraph } = Typography;
 const { TextArea } = Input;
@@ -25,111 +32,136 @@ type FieldType = {
 const desc = ["Terrible", "Bad", "Normal", "Good", "Wonderful"];
 
 const Feedback = () => {
-  const [value, setValue] = useState(3);
-  const [feedback, setFeedback] = useState(false);
-  const [user, setUser] = useState("");
+  const [overallRating, setOverallRating] = useState(1);
+  const user = useAppSelector((state) => state.auth.user);
 
-  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    console.log("Success:", values);
+  const { data: feedback } = useGetAllFeedbacksQuery(undefined);
+  const [addFeedback] = useAddFeedbackMutation();
+
+  const [value, setValue] = useState(3);
+
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const navigate = useNavigate();
+
+  const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
+    try {
+      const newDate = dayjs().format("YYYY-MM-DD");
+
+      const feedbackData = {
+        review: values?.review,
+        rating: value,
+        date: newDate,
+        customerEmail: user?.email,
+      };
+
+      messageApi.destroy("LOADING");
+
+      await addFeedback(feedbackData).unwrap();
+
+      messageApi.destroy("LOADING");
+      messageApi.open({
+        type: "success",
+        content: "Successfully added your review.",
+        key: "SUCCESS",
+      });
+    } catch (error) {
+      messageApi.destroy("LOADING");
+      messageApi.open({
+        type: "error",
+        content: "Review is failed.",
+        key: "ERROR",
+      });
+    }
   };
+
+  useEffect(() => {
+    const dataLength = feedback?.data?.length;
+    if (!!!dataLength) return;
+    let sum = 0;
+    feedback?.data?.forEach((item: any) => {
+      sum = sum + item?.rating;
+    });
+    const rating = sum / dataLength;
+    setOverallRating(rating);
+  }, [feedback?.data]);
 
   return (
     <div>
-      {feedback ? (
-        <div className="wrapper">
-          <h1 className="header1">FEEDBACKS</h1>
-          <p className="header2">Feedbacks given by all users</p>
+      {contextHolder}
+      <div className="wrapper relative">
+        {user ? <div></div> : <LogIn />}
+        <h1 className="header1">FEEDBACKS</h1>
+        <p className="header2">Feedbacks given by all customers</p>
+        <div className="py-8 max-w-[600px] mx-auto">
+          <Form
+            name="basic"
+            layout="vertical"
+            labelCol={{ span: 24 }}
+            wrapperCol={{ span: 24 }}
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            autoComplete="off"
+          >
+            <Row gutter={[32, 16]} align={"middle"}>
+              <Col span={24}>
+                <Paragraph>Your Rating</Paragraph>
+                <Flex gap="middle" vertical>
+                  <Rate
+                    tooltips={desc}
+                    onChange={setValue}
+                    value={value}
+                    character={<FaStar className="text-4xl md:text-7xl" />}
+                  />
+                  {value ? <Title level={4}>{desc[value - 1]}</Title> : null}
+                </Flex>
+              </Col>
+              <Col span={24}>
+                <Form.Item<FieldType> label="Your Review" name="review">
+                  <TextArea rows={2} />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Button htmlType="submit" type="primary">
+              Submit
+            </Button>
+          </Form>
+        </div>
+        <div>
           <div className="mt-10">
             <div className="flex flex-col justify-center items-center gap-4">
-              <h1 className="text-6xl font-bold text-[#008dda]">3.5/5.0</h1>
+              <h1 className="text-6xl font-bold text-[#008dda]">
+                {overallRating.toFixed(1)}/5.0
+              </h1>
               <Rate
                 disabled
-                defaultValue={3.5 - 1}
+                value={overallRating}
                 allowHalf
                 character={<FaStar className="text-4xl md:text-7xl" />}
               />
             </div>
             {/* feedback cards here  */}
             <div className="mt-10 flex flex-col items-center justify-center gap-8">
-              <FeedbackCards />
-              <FeedbackCards />
-              <FeedbackCards />
-              <FeedbackCards />
-              <Button htmlType="button" type="primary">
+              {feedback?.data?.slice(0, 2)?.map((item: any, idx: number) => (
+                <FeedbackCards key={idx} feedback={item} />
+              ))}
+              <Button
+                htmlType="button"
+                type="primary"
+                disabled={!feedback?.data?.length}
+                onClick={() => navigate("/reviews")}
+              >
                 SEE ALL REVIEWS
               </Button>
             </div>
           </div>
         </div>
-      ) : (
-        <div className="wrapper relative">
-          {user ? <div></div> : <LogIn />}
-          <h1 className="header1">YOUR FEEDBACK</h1>
-          <p className="header2">You are reviewing and rating as: John Doe</p>
-          <div className="py-8 max-w-[600px] mx-auto">
-            <Form
-              name="basic"
-              layout="vertical"
-              labelCol={{ span: 24 }}
-              wrapperCol={{ span: 24 }}
-              initialValues={{ remember: true }}
-              onFinish={onFinish}
-              autoComplete="off"
-            >
-              <Row gutter={[32, 16]} align={"middle"}>
-                <Col span={24}>
-                  <Paragraph>Your Rating</Paragraph>
-                  <Flex gap="middle" vertical>
-                    <Rate
-                      tooltips={desc}
-                      onChange={setValue}
-                      value={value}
-                      character={<FaStar className="text-4xl md:text-7xl" />}
-                    />
-                    {value ? <Title level={4}>{desc[value - 1]}</Title> : null}
-                  </Flex>
-                </Col>
-                <Col span={24}>
-                  <Form.Item<FieldType> label="Your Review" name="review">
-                    <TextArea rows={5} />
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Form>
-          </div>
-        </div>
-      )}
+      </div>
     </div>
   );
 };
 
 export default Feedback;
-
-const FeedbackCards = () => {
-  return (
-    <div className="flex flex-col gap-2 max-w-[500px]">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center justify-start gap-4">
-          <Avatar size={"default"} icon={<FaUser />} />
-          <p className="text-lg font-semibold">John Doe</p>
-        </div>
-        <div className="text-lg font-semibold flex items-center justify-start gap-2">
-          <FaStar /> <span>3</span>
-        </div>
-      </div>
-      <div>
-        <span className="text-sm text-[#757575]">Sep 21, 2024</span>
-      </div>
-      <div>
-        <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text
-          ever.
-        </p>
-      </div>
-    </div>
-  );
-};
 
 const LogIn = () => {
   return (
