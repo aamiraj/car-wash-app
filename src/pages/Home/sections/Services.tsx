@@ -4,7 +4,10 @@ import { useGetAllServicesQuery } from "../../../redux/api/serviceApi";
 import { Link } from "react-router-dom";
 
 const Services = () => {
-  const { data, isLoading } = useGetAllServicesQuery(undefined);
+  const { data, isLoading } = useGetAllServicesQuery({
+    searchTerm: "",
+    sort: "",
+  });
 
   return (
     <div className="wrapper">

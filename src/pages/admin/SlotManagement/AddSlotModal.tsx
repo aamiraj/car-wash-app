@@ -29,7 +29,10 @@ const AddSlotModal = ({ isOpen, setIsOpen }: AppModalProps) => {
   const [startTime, setStartTime] = useState<string>("");
   const [endTime, setEndTime] = useState<string>("");
   const [addSlot] = useAddASlotMutation();
-  const { data, isFetching } = useGetAllServicesQuery(undefined);
+  const { data, isFetching } = useGetAllServicesQuery({
+    searchTerm: "",
+    sort: "",
+  });
   const [messageApi, contextHolder] = message.useMessage();
 
   const handleCancel = () => {

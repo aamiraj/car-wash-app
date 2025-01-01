@@ -34,7 +34,10 @@ const ServiceManagement = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [serviceId, setServiceId] = useState<string | null>(null);
-  const { data: servicesData, isFetching } = useGetAllServicesQuery(undefined);
+  const { data: servicesData, isFetching } = useGetAllServicesQuery({
+    searchTerm: "",
+    sort: "",
+  });
 
   const handleOpenAddModal = () => {
     setIsAddModalOpen(true);

@@ -1,6 +1,6 @@
-import { Button, Card, Tag } from "antd";
+import { Card, Tag } from "antd";
 import { FaClock, FaDollarSign, FaEye } from "react-icons/fa6";
-import { TbHandClick } from "react-icons/tb";
+// import { TbHandClick } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import Service1 from "../../assets/service-1.jpg";
 import Service2 from "../../assets/service-2.png";
@@ -28,17 +28,17 @@ interface TService {
   description: string;
 }
 
-const BookNow = () => (
-  <Button
-    key="book-now"
-    type="primary"
-    htmlType="button"
-    className="flex justify-center items-center gap-1"
-  >
-    <TbHandClick />
-    <span>BOOK NOW</span>
-  </Button>
-);
+// const BookNow = () => (
+//   <Button
+//     key="book-now"
+//     type="primary"
+//     htmlType="button"
+//     className="flex justify-center items-center gap-1"
+//   >
+//     <TbHandClick />
+//     <span>BOOK NOW</span>
+//   </Button>
+// );
 
 const SeeDetails = ({ id }: { id: string }) => (
   <Link
