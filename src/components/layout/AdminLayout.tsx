@@ -1,10 +1,11 @@
-import React from "react";
-import { Layout, Menu, theme } from "antd";
+import React, { useState } from "react";
+import { Button, Drawer, Layout, Menu, theme } from "antd";
 import { NavLink, Outlet } from "react-router-dom";
 import Logo from "../ui/Logo";
 import { CiSettings } from "react-icons/ci";
 import { MdAvTimer, MdHome, MdOutlineDashboard } from "react-icons/md";
 import { PiUsersFourThin } from "react-icons/pi";
+import { RiMenuFold2Line } from "react-icons/ri";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -43,40 +44,70 @@ const AdminLayout: React.FC = () => {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
+  const [open, setOpen] = useState(false);
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Layout>
-      <Sider breakpoint="lg" collapsedWidth="0" width={240}>
-        <div className="p-4 align-middle hidden lg:block">
+      <Header style={{ padding: 0, background: colorBgContainer }}>
+        <div className="p-4 align-middle">
           <Logo />
         </div>
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={["1"]}
-          items={items}
-        />
-      </Sider>
+      </Header>
+
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }}>
-          <div className="p-4 align-middle block lg:hidden">
-            <Logo />
-          </div>
-        </Header>
-        <Content style={{ margin: "24px 16px 0" }}>
-          <div
-            style={{
-              padding: 24,
-              minHeight: "100vh",
-              background: colorBgContainer,
-              borderRadius: borderRadiusLG,
-            }}
+        <Sider breakpoint="lg" collapsedWidth="0" width={240} trigger={null}>
+          <Menu
+            theme="dark"
+            mode="inline"
+            defaultSelectedKeys={["1"]}
+            items={items}
+          />
+        </Sider>
+
+        <Drawer placement="left" onClose={onClose} open={open} width={240}>
+          <Menu
+            theme="light"
+            mode="inline"
+            defaultSelectedKeys={["1"]}
+            items={items}
+            onClick={onClose}
+          />
+        </Drawer>
+
+        <Layout className="relative">
+          <Button
+            type="primary"
+            onClick={showDrawer}
+            className="block lg:hidden fixed bottom-4 left-2 z-50"
           >
-            <Outlet />
-          </div>
-        </Content>
-        <Footer style={{ textAlign: "center" }}>
-          Car Wash Shop ©{new Date().getFullYear()}
-        </Footer>
+            <RiMenuFold2Line />
+          </Button>
+
+          <Content style={{ margin: "24px 16px 0" }}>
+            <div
+              style={{
+                padding: 24,
+                minHeight: "100vh",
+                background: colorBgContainer,
+                borderRadius: borderRadiusLG,
+              }}
+            >
+              <Outlet />
+            </div>
+          </Content>
+
+          <Footer style={{ textAlign: "center" }}>
+            Car Wash Shop ©{new Date().getFullYear()}
+          </Footer>
+        </Layout>
       </Layout>
     </Layout>
   );

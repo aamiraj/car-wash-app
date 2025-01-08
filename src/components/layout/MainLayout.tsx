@@ -1,4 +1,13 @@
-import { Col, Layout, Row, Space, Typography } from "antd";
+import {
+  Button,
+  Col,
+  Drawer,
+  Flex,
+  Layout,
+  Row,
+  Space,
+  Typography,
+} from "antd";
 import Logo from "../ui/Logo";
 import {
   FaBars,
@@ -12,6 +21,7 @@ import { Link, NavLink, Outlet } from "react-router-dom";
 import { useAppSelector } from "../../redux/hooks";
 import decodeJwtToken from "../../utils/decodeJwtToken";
 import AppDropDown from "../ui/AppDropDown";
+import { useState } from "react";
 
 const { Title, Paragraph } = Typography;
 
@@ -39,11 +49,11 @@ const items = [
     label: "Services",
     link: "/services",
   },
-  // {
-  //   key: 3,
-  //   label: "Bookings",
-  //   link: "/bookings",
-  // },
+  {
+    key: 3,
+    label: "Compare",
+    link: "/compare",
+  },
   // {
   //   key: 4,
   //   label: "About Us",
@@ -62,16 +72,14 @@ const MainLayout = () => {
     user?.role === "admin" ? (userLink = "/admin") : (userLink = "/customer");
   }
 
-  const toggleMobileNavLinks = (id: string) => {
-    const menuNavLinks = document.getElementById(id) as HTMLElement;
+  const [open, setOpen] = useState(false);
 
-    if (menuNavLinks.style.display === "none") {
-      menuNavLinks.style.display = "block";
-      menuNavLinks.style.width = "200px";
-    } else {
-      menuNavLinks.style.display = "none";
-      menuNavLinks.style.width = "0px";
-    }
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -119,56 +127,40 @@ const MainLayout = () => {
           {auth?.user ? (
             <AppDropDown userLink={userLink} />
           ) : (
-            <Link to="/log-in" className="pill-btn">
-              LOG IN
-            </Link>
+            <Space wrap>
+              <Link to="/log-in" className="pill-btn">
+                LOG IN
+              </Link>
+              <Link to="/sign-up" className="pill-btn-sign-up">
+                SIGN UP
+              </Link>
+            </Space>
           )}
         </div>
         {/* on mobile device  */}
         <div className="block md:hidden">
-          <button
-            type="button"
-            onClick={() => toggleMobileNavLinks("menuNavLinks")}
-          >
+          <Button type="default" htmlType="button" onClick={showDrawer}>
             <FaBars className="text-xl" />
-          </button>
-          <div
-            id="menuNavLinks"
-            style={{ display: "none", width: "0px" }}
-            className="h-full overflow-x-hidden fixed top-0 right-0 bg-gray-200 transition-[width]  duration-500 z-10"
-          >
-            <div className="relative">
-              <div className="absolute top-0 left-0 -mt-2">
-                <button
-                  type="button"
-                  className="text-4xl "
-                  onClick={() => toggleMobileNavLinks("menuNavLinks")}
-                >
-                  &times;
-                </button>
-              </div>
-            </div>
-            <div className="p-6">
-              <Space size={"small"} align="start" direction="vertical">
-                {items.map((item) => (
-                  <NavLink
-                    key={item.key}
-                    to={item.link}
-                    style={navLinkStyle}
-                    className={"nav-link"}
-                  >
-                    {item.label}
-                  </NavLink>
-                ))}
-                <Link to="/log-in" className="pill-btn">
-                  LOG IN
-                </Link>
-              </Space>
-            </div>
-          </div>
+          </Button>
         </div>
       </Header>
       <Content className="p-8 lg:py-6 lg:px-12">
+        <Drawer open={open} onClose={onClose} placement="right" width={240}>
+          <Flex vertical gap={"large"} align="flex-start">
+            {items.map((item) => (
+              <NavLink key={item.key} to={item.link} style={navLinkStyle}>
+                {item.label}
+              </NavLink>
+            ))}
+            {auth?.user ? (
+              <AppDropDown userLink={userLink} />
+            ) : (
+              <Link to="/log-in" className="pill-btn">
+                LOG IN
+              </Link>
+            )}
+          </Flex>
+        </Drawer>
         <Outlet />
       </Content>
       <Footer>
@@ -187,13 +179,13 @@ const MainLayout = () => {
               <Link to={"/"} className="link">
                 Home
               </Link>
-              <Link to={"/"} className="link">
+              <Link to={"/services"} className="link">
                 Services
               </Link>
-              <Link to={"/"} className="link">
-                Bookings
+              <Link to={"/sign-up"} className="link">
+                Create an account
               </Link>
-              <Link to={"/"} className="link">
+              <Link to={"/reviews"} className="link">
                 Reviews
               </Link>
             </Space>
@@ -201,13 +193,13 @@ const MainLayout = () => {
           <Col span={24} md={{ span: 12 }} lg={{ span: 6 }}>
             <Title level={4}>Social Links</Title>
             <Space align="start" direction="vertical">
-              <Link to={"/"} className="link">
+              <Link to={"https://www.facebook.com"} className="link">
                 Facebook
               </Link>
-              <Link to={"/"} className="link">
+              <Link to={"https://www.twitter.com"} className="link">
                 Twitter
               </Link>
-              <Link to={"/"} className="link">
+              <Link to={"https://www.youtube.com"} className="link">
                 Youtube
               </Link>
             </Space>

@@ -8,8 +8,12 @@ import type {
 import { RootState } from "../store";
 import { logOutUser } from "../features/auth/authSlice";
 
+const BASE_URL = import.meta.env.VITE_PRODUCTION_ENVIROMENT as string === "true" ?
+  import.meta.env.VITE_PRODUCTION_API as string :
+  import.meta.env.VITE_DEVELOPMENT_API as string
+
 const baseQuery = fetchBaseQuery({
-  baseUrl: import.meta.env.VITE_PRODUCTION_API as string,
+  baseUrl: BASE_URL,
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
 

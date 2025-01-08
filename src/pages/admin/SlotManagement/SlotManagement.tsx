@@ -1,5 +1,17 @@
-import { Button, GetProps, Input, Skeleton, Table, TableProps } from "antd";
-import { useGetAllSlotsQuery } from "../../../redux/api/slotApi";
+import {
+  Button,
+  GetProps,
+  Input,
+  message,
+  Select,
+  Skeleton,
+  Table,
+  TableProps,
+} from "antd";
+import {
+  useChangeSlotStatusMutation,
+  useGetAllSlotsQuery,
+} from "../../../redux/api/slotApi";
 import { FaPlusCircle } from "react-icons/fa";
 import { useState } from "react";
 import AddSlotModal from "./AddSlotModal";
@@ -26,6 +38,18 @@ interface DataType {
 const SlotManagement = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const { data, isFetching } = useGetAllSlotsQuery(undefined);
+  const [changeSlotStatus] = useChangeSlotStatusMutation();
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const handleChange = async (id: string, value: string) => {
+    console.log(`${id} ${value}`);
+    try {
+      await changeSlotStatus({ id: id, slotStatus: value }).unwrap();
+      messageApi.success("Changed the slot status successfully.");
+    } catch (error) {
+      messageApi.error("Something went wrong!");
+    }
+  };
 
   const columns: TableProps<DataType>["columns"] = [
     {
@@ -35,7 +59,7 @@ const SlotManagement = () => {
       fixed: "left",
       sorter: (a, b) =>
         new Date(a?.date).getTime() - new Date(b?.date).getTime(),
-      defaultSortOrder: "ascend",
+      defaultSortOrder: "descend",
     },
     {
       title: "Service",
@@ -63,14 +87,21 @@ const SlotManagement = () => {
       title: "Status",
       key: "status",
       dataIndex: "isBooked",
-      render: (value) => (
-        <p
-          className={value === "available" ? "text-green-500" : "text-red-500"}
-          style={{ textTransform: "capitalize" }}
-        >
-          {value}
-        </p>
-      ),
+      render: (value, record) =>
+        value === "booked" ? (
+          <p className="capitalize text-blue-500 font-semibold">{value}</p>
+        ) : (
+          <Select
+            onChange={(value) => handleChange(record?._id, value)}
+            options={[
+              { value: "available", label: "Available" },
+              { value: "canceled", label: "Canceled" },
+            ]}
+            defaultValue={value}
+          >
+            {value}
+          </Select>
+        ),
     },
   ];
 
@@ -87,6 +118,7 @@ const SlotManagement = () => {
         <Skeleton paragraph={{ rows: 10 }} />
       ) : (
         <div>
+          {contextHolder}
           <h1 className="text-2xl font-semibold mb-4">Slot Management</h1>
           <div className="mb-4">
             <Search

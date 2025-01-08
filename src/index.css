@@ -84,6 +84,23 @@ body {
   color: #008dda;
 }
 
+.pill-btn-sign-up {
+  background: #208900;
+  color: white;
+  text-decoration: none;
+  text-transform: uppercase;
+  padding: 8px 20px;
+  border-radius: 9999px;
+  border: 2px #208900 solid;
+  transition: all;
+  transition-duration: 300ms;
+}
+
+.pill-btn-sign-up:hover {
+  background: #fff;
+  color: #208900;
+}
+
 .link {
   @apply text-gray-500 text-base font-semibold;
 }

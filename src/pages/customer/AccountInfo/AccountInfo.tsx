@@ -40,7 +40,7 @@ const AccountInfo = () => {
           </Row>
 
           <Form.Item>
-            <Button type="primary" disabled>Submit</Button>
+            <Button type="primary" htmlType="submit" disabled>Update</Button>
           </Form.Item>
         </Form>
       </div>

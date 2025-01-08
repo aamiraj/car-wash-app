@@ -18,11 +18,13 @@ import CustomerDashboard from "../pages/customer/CustomerDashboard/CustomerDashb
 import AccountInfo from "../pages/customer/AccountInfo/AccountInfo";
 import ProtectedPage from "../components/ui/ProtectedPage";
 import Reviews from "../pages/Reviews/Reviews";
+import Compare from "../pages/Compare/Compare";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <Error />,
     children: [
       {
         index: true,
@@ -45,12 +47,12 @@ const router = createBrowserRouter([
         element: <Reviews />,
       },
       {
-        path: "/success",
-        element: <Success />,
+        path: "/compare",
+        element: <Compare />,
       },
       {
-        path: "/error",
-        element: <Error />,
+        path: "/success",
+        element: <Success />,
       },
     ],
   },
@@ -58,7 +60,7 @@ const router = createBrowserRouter([
     path: "/admin",
     element: (
       <ProtectedPage selectedRole={["admin", "superAdmin"]}>
-        <AdminLayout />,
+        <AdminLayout />
       </ProtectedPage>
     ),
     children: [
@@ -84,7 +86,7 @@ const router = createBrowserRouter([
     path: "/customer",
     element: (
       <ProtectedPage selectedRole={["user"]}>
-        <CustomerLayout />,
+        <CustomerLayout />
       </ProtectedPage>
     ),
     children: [
